@@ -9,6 +9,7 @@ data class Book (
     val rating: Float,
     val publishedDate: String,
     val publisher: String,
-    val language: String,
+    val isbn: String,
     val categories: String,
+    val price: Int,
 );
