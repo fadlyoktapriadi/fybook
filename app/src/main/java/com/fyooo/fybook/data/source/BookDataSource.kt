@@ -1,6 +1,6 @@
 package com.fyooo.fybook.data.source
 
-import com.fyooo.fybook.data.Book
+import com.fyooo.fybook.data.model.Book
 
 object BookDataSource {
     val dummyBook = listOf(

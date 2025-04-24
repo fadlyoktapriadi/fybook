@@ -1,4 +1,4 @@
-package com.fyooo.fybook.data
+package com.fyooo.fybook.data.model
 
 data class Book (
     val id: Long,

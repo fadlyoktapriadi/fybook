@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.fyooo.fybook.screen.fyBookApp
-import com.fyooo.fybook.ui.theme.FybookTheme
+import com.example.compose.FybookTheme
+import com.fyooo.fybook.ui.screen.FyBookApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             FybookTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    fyBookApp(
+                    FyBookApp(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPadding)
