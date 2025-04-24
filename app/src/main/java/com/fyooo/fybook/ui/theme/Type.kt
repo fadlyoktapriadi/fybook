@@ -14,6 +14,10 @@ val fredoka = FontFamily(
     Font(R.font.fredoka_semibold, FontWeight.SemiBold),
 )
 
+val singleDay = FontFamily(
+    Font(R.font.singleday_regular, FontWeight.Bold),
+)
+
 val MyTypography = Typography(
     bodyLarge = TextStyle(
         fontFamily = fredoka,
@@ -97,21 +101,21 @@ val MyTypography = Typography(
         letterSpacing = 0.25.sp
     ),
     headlineLarge = TextStyle(
-        fontFamily = fredoka,
+        fontFamily = singleDay,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp,
         lineHeight = 40.sp,
         letterSpacing = 0.sp
     ),
     headlineMedium = TextStyle(
-        fontFamily = fredoka,
+        fontFamily = singleDay,
         fontWeight = FontWeight.Bold,
         fontSize = 28.sp,
         lineHeight = 36.sp,
         letterSpacing = 0.sp
     ),
     headlineSmall = TextStyle(
-        fontFamily = fredoka,
+        fontFamily = singleDay,
         fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
         lineHeight = 32.sp,

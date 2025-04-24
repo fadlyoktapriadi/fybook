@@ -14,7 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.fyooo.fybook.data.model.Book
-import com.fyooo.fybook.ui.BookItem
+import com.fyooo.fybook.ui.screen.components.BookItem
 import com.fyooo.fybook.ui.common.UiState
 import org.koin.androidx.compose.koinViewModel
 
@@ -24,21 +24,21 @@ fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
     navigateToDetail: (Long) -> Unit,
 ) {
-    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
-        when (uiState) {
+    val uiState = viewModel.uiState.collectAsState(initial = UiState.Loading).value
 
-            is UiState.Loading -> {
-                viewModel.fetchBooks()
-            }
-            is UiState.Success<*> -> {
-                val listBook = uiState.data as List<Book>
-                HomeContent(
-                    listBook = listBook,
-                    modifier = modifier,
-                    navigateToDetail = navigateToDetail,
-                )
-            }
-            is UiState.Error -> {}
+    when (uiState) {
+        is UiState.Loading -> {
+            viewModel.fetchBooks()
+        }
+        is UiState.Success -> {
+            HomeContent(
+                listBook = uiState.data,
+                modifier = modifier,
+                navigateToDetail = navigateToDetail
+            )
+        }
+        is UiState.Error -> {
+            Text(text = "Error: ${uiState.errorMessage}", modifier = Modifier.padding(16.dp))
         }
     }
 }
@@ -52,7 +52,7 @@ fun HomeContent(
     Column {
         Text(
             text = "Best Seller \uD83D\uDD25",
-            style = MaterialTheme.typography.labelLarge,
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
         )
         LazyVerticalGrid(

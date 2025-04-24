@@ -1,4 +1,4 @@
-package com.fyooo.fybook.ui
+package com.fyooo.fybook.ui.screen.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -38,7 +38,7 @@ fun BookItem(
                 contentDescription = "Book Cover",
                 contentScale = ContentScale.Crop,
                 modifier = modifier
-                    .size(170.dp)
+                    .size(180.dp)
 //                    .clip(Shapes.)
             )
             Column(
@@ -46,13 +46,15 @@ fun BookItem(
             ) {
                 Text(
                     text = book.title,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(top = 2.dp)
                 )
                 Text(
                     text = book.categories,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Normal,
                     color = MaterialTheme.colorScheme.primary,
@@ -60,8 +62,7 @@ fun BookItem(
                 )
                 Text(
                     text = formatCurrency(book.price),
-                    style = MaterialTheme.typography.bodySmall,
-//                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(vertical = 6.dp)
                 )
             }

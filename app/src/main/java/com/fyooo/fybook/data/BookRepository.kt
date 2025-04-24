@@ -10,17 +10,13 @@ class BookRepository {
     fun getAllBooks(): Flow<List<Book>> = flow {
         emit(BookDataSource.dummyBook)
     }
+    fun getBookById(id: Long): Flow<Book> = flow {
+        val book = BookDataSource.dummyBook.find { it.id == id }
+        if (book != null) {
+            emit(book)
+        } else {
+            throw Exception("Book not found")
+        }
+    }
 
-
-//    companion object {
-//        @Volatile
-//        private var instance: BookRepository? = null
-//
-//        fun getInstance(): BookRepository =
-//            instance ?: synchronized(this) {
-//                BookRepository().apply {
-//                    instance = this
-//                }
-//            }
-//    }
 }

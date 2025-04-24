@@ -14,7 +14,6 @@ import com.fyooo.fybook.ui.screen.FyBookApp
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             FybookTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
