@@ -2,6 +2,7 @@ package com.fyooo.fybook.di
 
 import com.fyooo.fybook.data.BookRepository
 import com.fyooo.fybook.ui.screen.Home.HomeViewModel
+import com.fyooo.fybook.ui.screen.detail.DetailViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -61,4 +62,5 @@ val repositoryModule = module {
 
 val viewModelModule = module {
     viewModel { HomeViewModel(get()) }
+    viewModel { DetailViewModel(get()) }
 }

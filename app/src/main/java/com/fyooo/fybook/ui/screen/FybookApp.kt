@@ -16,13 +16,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.compose.FybookTheme
 import com.fyooo.fybook.ui.navigation.Screen
 import com.fyooo.fybook.ui.screen.Home.HomeScreen
+import com.fyooo.fybook.ui.screen.detail.DetailScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,20 +38,6 @@ fun FyBookApp(
 
     Scaffold(
         modifier = modifier,
-        topBar = {
-             TopAppBar(
-                 title = { Text(text = "Fybook",
-                     style = MaterialTheme.typography.headlineLarge,
-                     color = MaterialTheme.colorScheme.primary
-
-                 ) },
-                 actions = {
-                     IconButton(onClick = { /* TODO */ }) {
-                         Icon(Icons.Outlined.ShoppingCart, contentDescription = "Cart")
-                     }
-                 }
-             )
-        },
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -62,39 +51,19 @@ fun FyBookApp(
                     }
                 )
             }
-//            composable(Screen.Cart.route) {
-//                val context = LocalContext.current
-//                CartScreen(
-//                    onOrderButtonClicked = { message ->
-//                        shareOrder(context, message)
-//                    }
-//                )
-//            }
-//            composable(Screen.Profile.route) {
-//                ProfileScreen()
-//            }
-//            composable(
-//                route = Screen.DetailReward.route,
-//                arguments = listOf(navArgument("batikId") { type = NavType.LongType }),
-//            ) {
-//                val id = it.arguments?.getLong("batikId") ?: -1L
-//                DetailScreen(
-//                    batikId = id,
-//                    navigateBack = {
-//                        navController.navigateUp()
-//                    },
-//                    navigateToCart = {
-//                        navController.popBackStack()
-//                        navController.navigate(Screen.Cart.route) {
-//                            popUpTo(navController.graph.findStartDestination().id) {
-//                                saveState = true
-//                            }
-//                            launchSingleTop = true
-//                            restoreState = true
-//                        }
-//                    }
-//                )
-//            }
+
+            composable(
+                route = Screen.DetailBook.route,
+                arguments = listOf(navArgument("id") { type = NavType.LongType }),
+            ) {
+                val id = it.arguments?.getLong("id") ?: -1L
+                DetailScreen(
+                    id = id,
+                    navigateBack = {
+                        navController.navigateUp()
+                    }
+                )
+            }
         }
     }
 }
@@ -165,11 +134,3 @@ fun FyBookApp(
 //        }
 //    }
 //}
-
-@Preview(showBackground = true)
-@Composable
-fun FybookPreview() {
-    FybookTheme {
-        FyBookApp()
-    }
-}

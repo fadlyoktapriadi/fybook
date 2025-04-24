@@ -39,7 +39,6 @@ fun BookItem(
                 contentScale = ContentScale.Crop,
                 modifier = modifier
                     .size(180.dp)
-//                    .clip(Shapes.)
             )
             Column(
                 modifier = modifier.padding(8.dp)
