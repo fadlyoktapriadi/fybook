@@ -65,13 +65,6 @@ fun CartItem(
                     .padding(8.dp)
                     .size(70.dp)
             )
-//            Image(
-//                painter = painterResource(id = R.drawable.meditations),
-//                contentDescription = null,
-//                modifier = Modifier
-//                    .padding(8.dp)
-//                    .size(70.dp)
-//            )
             Column(
                 verticalArrangement = Arrangement.Center
             ) {
@@ -93,17 +86,14 @@ fun CartItem(
                             style = MaterialTheme.typography.titleSmall,
                             modifier = Modifier.padding(horizontal = 8.dp)
                         )
+                        Text(
+                            text = "Subtotal: ${formatCurrency(book.price!! * quantity)}",
+                            style = MaterialTheme.typography.titleSmall,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        )
                     }
                 }
             }
-
-//            ProductQuantityCounter(
-//                quantity = quantity,
-//                onIncrease = { quantity++ },
-//                onDecrease = { if (quantity > 1) quantity-- },
-//                modifier = Modifier.padding(8.dp)
-//            )
-
             Text(
                 text = "x$quantity",
                 style = MaterialTheme.typography.labelLarge,

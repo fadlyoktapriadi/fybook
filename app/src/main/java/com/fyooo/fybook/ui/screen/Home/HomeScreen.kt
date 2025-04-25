@@ -77,7 +77,6 @@ fun HomeScreen(
 
 }
 
-
 @Composable
 fun HomeContent(
     listBook: List<Book>,
@@ -85,11 +84,6 @@ fun HomeContent(
     navigateToDetail: (Long) -> Unit,
 ) {
     Column {
-        Text(
-            text = "Best Seller \uD83D\uDD25",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
-        )
         LazyVerticalGrid(
             columns = GridCells.Adaptive(160.dp),
             contentPadding = PaddingValues(16.dp),
