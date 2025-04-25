@@ -32,13 +32,13 @@ import androidx.compose.ui.unit.dp
 import com.fyooo.fybook.data.local.entity.CartBookEntity
 import com.fyooo.fybook.ui.common.UiState
 import com.fyooo.fybook.ui.screen.components.CartItem
-import com.fyooo.fybook.ui.screen.detail.DetailContent
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(
     navigateBack: () -> Unit,
+    navigateToCheckout: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CartViewModel = koinViewModel()
 ){
@@ -70,7 +70,9 @@ fun CartScreen(
                         disabledContainerColor = MaterialTheme.colorScheme.primary,
                         disabledContentColor = MaterialTheme.colorScheme.onPrimary
                     ),
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        navigateToCheckout()
+                    },
                 ) {
                     Icon(
                         imageVector = Icons.Default.ShoppingCart,

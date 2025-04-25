@@ -26,6 +26,7 @@ import com.example.compose.FybookTheme
 import com.fyooo.fybook.ui.navigation.Screen
 import com.fyooo.fybook.ui.screen.Home.HomeScreen
 import com.fyooo.fybook.ui.screen.cart.CartScreen
+import com.fyooo.fybook.ui.screen.checkout.CheckoutScreen
 import com.fyooo.fybook.ui.screen.detail.DetailScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,6 +72,17 @@ fun FyBookApp(
 
             composable(Screen.Cart.route) {
                 CartScreen(
+                    navigateBack = {
+                        navController.navigateUp()
+                    },
+                    navigateToCheckout = {
+                        navController.navigate(Screen.Checkout.route)
+                    }
+                )
+            }
+
+            composable(Screen.Checkout.route) {
+                CheckoutScreen(
                     navigateBack = {
                         navController.navigateUp()
                     }
