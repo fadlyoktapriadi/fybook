@@ -2,6 +2,7 @@ package com.fyooo.fybook.ui.screen.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fyooo.fybook.data.BookRepository
+import com.fyooo.fybook.data.local.entity.CartBookEntity
 import com.fyooo.fybook.data.model.Book
 import com.fyooo.fybook.ui.common.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +24,16 @@ class DetailViewModel(private val repository: BookRepository) : ViewModel() {
                 .collect { book ->
                     _uiState.value = UiState.Success(book)
                 }
+        }
+    }
+
+    fun insertCartBook(cartBook: CartBookEntity) {
+        viewModelScope.launch {
+            repository.insertCartBook(cartBook)
+                .catch { exception ->
+                    _uiState.value = UiState.Error(exception.message ?: "Unknown error")
+                }
+                .collect { }
         }
     }
 }

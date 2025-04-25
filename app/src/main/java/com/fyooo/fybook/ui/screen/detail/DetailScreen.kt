@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.compose.FybookTheme
 import com.fyooo.fybook.R
+import com.fyooo.fybook.data.local.entity.CartBookEntity
 import com.fyooo.fybook.data.model.Book
 import com.fyooo.fybook.data.source.BookDataSource
 import com.fyooo.fybook.ui.common.UiState
@@ -91,7 +92,18 @@ fun DetailScreen(
                 DetailContent(
                     book = uiState.data,
                     modifier = Modifier.padding(innerPadding),
-                    navigateBack = navigateBack
+                    navigateBack = navigateBack,
+                    insertToCart = {
+                        val cartBook = CartBookEntity(
+                            id = null,
+                            bookId = uiState.data.id,
+                            title = uiState.data.title,
+                            price = uiState.data.price,
+                            coverUrl = uiState.data.coverUrl,
+                            quantity = 1
+                        )
+                        viewModel.insertCartBook(cartBook)
+                    }
                 )
             }
             is UiState.Error -> {
@@ -107,6 +119,7 @@ fun DetailContent(
     book: Book,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
+    insertToCart: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -246,7 +259,9 @@ fun DetailContent(
         }
 
         ElevatedButton(
-            onClick = {},
+            onClick = {
+                insertToCart()
+            },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -292,7 +307,7 @@ fun DetailContentPreview() {
             price = 0
         )
     FybookTheme {
-        DetailContent(book,navigateBack = {})
+        DetailContent(book,navigateBack = {}, insertToCart = {})
 
     }
 }

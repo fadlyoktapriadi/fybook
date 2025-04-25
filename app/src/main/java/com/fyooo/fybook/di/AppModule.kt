@@ -1,27 +1,26 @@
 package com.fyooo.fybook.di
 
+import android.app.Application
+import androidx.room.Room
 import com.fyooo.fybook.data.BookRepository
+import com.fyooo.fybook.data.local.database.CartRoomDatabase
 import com.fyooo.fybook.ui.screen.Home.HomeViewModel
 import com.fyooo.fybook.ui.screen.detail.DetailViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-//val databaseModule = module {
-//    factory {
-//        get<UserRoomDatabase>().usersDao()
-//    }
-//    single {
-//        val passphrase: ByteArray = SQLiteDatabase.getBytes("fadly".toCharArray())
-//        val factory = SupportFactory(passphrase)
-//        Room.databaseBuilder(
-//            androidContext(),
-//            UserRoomDatabase::class.java, "Users"
-//        ).fallbackToDestructiveMigration()
-//            .openHelperFactory(factory)
-//            .build()
-//    }
-//}
-//
+val databaseModule = module {
+    single {
+        Room.databaseBuilder(
+                get<Application>(),
+                CartRoomDatabase::class.java,
+                "book_database"
+            ).fallbackToDestructiveMigration(false).build()
+    }
+
+    single { get<CartRoomDatabase>().cartDao() }
+}
+
 //val networkModule = module {
 //    single {
 //        val hostname = "api.github.com"
@@ -56,7 +55,7 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     single<BookRepository> {
-        BookRepository()
+        BookRepository(get())
     }
 }
 

@@ -1,6 +1,7 @@
 package com.fyooo.fybook
 
 import android.app.Application
+import com.fyooo.fybook.di.databaseModule
 import com.fyooo.fybook.di.repositoryModule
 import com.fyooo.fybook.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -11,7 +12,7 @@ open class MyApplication : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@MyApplication)
-            modules(repositoryModule, viewModelModule)
+            modules(repositoryModule, viewModelModule, databaseModule)
         }
     }
 }
