@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.fyooo.fybook.data.BookRepository
 import com.fyooo.fybook.data.local.database.CartRoomDatabase
 import com.fyooo.fybook.ui.screen.Home.HomeViewModel
+import com.fyooo.fybook.ui.screen.cart.CartViewModel
 import com.fyooo.fybook.ui.screen.detail.DetailViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -62,4 +63,5 @@ val repositoryModule = module {
 val viewModelModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { DetailViewModel(get()) }
+    viewModel { CartViewModel(get()) }
 }

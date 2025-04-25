@@ -34,6 +34,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = koinViewModel(),
     navigateToDetail: (Long) -> Unit,
+    navigateToCart: () -> Unit,
 ) {
 
     Scaffold(
@@ -45,7 +46,9 @@ fun HomeScreen(
 
                 ) },
                 actions = {
-                    IconButton(onClick = { /* TODO */ }) {
+                    IconButton(onClick = {
+                        navigateToCart()
+                    }) {
                         Icon(Icons.Outlined.ShoppingCart, contentDescription = "Cart")
                     }
                 }

@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -24,6 +25,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -58,15 +61,19 @@ fun DetailScreen(
     id: Long,
     viewModel: DetailViewModel = koinViewModel(),
     navigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    navigateToCart: () -> Unit,
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(text = "Book Details") },
                 actions = {
-                    IconButton(onClick = { /* TODO */ }) {
-                        Icon(Icons.Default.ShoppingCart, contentDescription = "Cart")
+                    IconButton(onClick = {
+                        navigateToCart()
+                    }) {
+                        Icon(Icons.Outlined.ShoppingCart, contentDescription = "Cart")
                     }
                 },
                 navigationIcon = {
@@ -79,7 +86,8 @@ fun DetailScreen(
                 }
 
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { innerPadding ->
         // Content of the DetailScreen
         val uiState = viewModel.uiState.collectAsState(initial = UiState.Loading).value
@@ -93,16 +101,16 @@ fun DetailScreen(
                     book = uiState.data,
                     modifier = Modifier.padding(innerPadding),
                     navigateBack = navigateBack,
-                    insertToCart = {
+                    insertToCart = { quantity ->
                         val cartBook = CartBookEntity(
                             id = null,
                             bookId = uiState.data.id,
                             title = uiState.data.title,
                             price = uiState.data.price,
                             coverUrl = uiState.data.coverUrl,
-                            quantity = 1
+                            quantity = quantity
                         )
-                        viewModel.insertCartBook(cartBook)
+                        viewModel.insertCartBook(cartBook, snackbarHostState)
                     }
                 )
             }
@@ -119,11 +127,10 @@ fun DetailContent(
     book: Book,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
-    insertToCart: () -> Unit,
+    insertToCart: (Int) -> Unit,
 ) {
     Column(
         modifier = modifier
-//            .padding(16.dp)
             .verticalScroll(rememberScrollState()) // Enable vertical scrolling
     ) {
         var quantity by remember { mutableStateOf(1) }
@@ -260,7 +267,7 @@ fun DetailContent(
 
         ElevatedButton(
             onClick = {
-                insertToCart()
+                insertToCart(quantity)
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.primary,

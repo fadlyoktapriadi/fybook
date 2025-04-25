@@ -1,4 +1,5 @@
 package com.fyooo.fybook.ui.screen.detail
+import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fyooo.fybook.data.BookRepository
@@ -27,13 +28,14 @@ class DetailViewModel(private val repository: BookRepository) : ViewModel() {
         }
     }
 
-    fun insertCartBook(cartBook: CartBookEntity) {
+    fun insertCartBook(cartBook: CartBookEntity, snackbarHostState: SnackbarHostState) {
         viewModelScope.launch {
             repository.insertCartBook(cartBook)
                 .catch { exception ->
                     _uiState.value = UiState.Error(exception.message ?: "Unknown error")
                 }
                 .collect { }
+            snackbarHostState.showSnackbar("Added to cart!")
         }
     }
 }

@@ -25,6 +25,7 @@ import androidx.navigation.navArgument
 import com.example.compose.FybookTheme
 import com.fyooo.fybook.ui.navigation.Screen
 import com.fyooo.fybook.ui.screen.Home.HomeScreen
+import com.fyooo.fybook.ui.screen.cart.CartScreen
 import com.fyooo.fybook.ui.screen.detail.DetailScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,6 +46,9 @@ fun FyBookApp(
                 HomeScreen(
                     navigateToDetail = { id ->
                         navController.navigate(Screen.DetailBook.createRoute(id))
+                    },
+                    navigateToCart = {
+                        navController.navigate(Screen.Cart.route)
                     }
                 )
             }
@@ -56,6 +60,17 @@ fun FyBookApp(
                 val id = it.arguments?.getLong("id") ?: -1L
                 DetailScreen(
                     id = id,
+                    navigateBack = {
+                        navController.navigateUp()
+                    },
+                    navigateToCart = {
+                        navController.navigate(Screen.Cart.route)
+                    }
+                )
+            }
+
+            composable(Screen.Cart.route) {
+                CartScreen(
                     navigateBack = {
                         navController.navigateUp()
                     }
