@@ -33,9 +33,6 @@ fun FyBookApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-
     Scaffold(
         modifier = modifier,
     ) { innerPadding ->
@@ -67,70 +64,3 @@ fun FyBookApp(
         }
     }
 }
-
-//private fun shareOrder(context: Context, summary: String) {
-//    val intent = Intent(Intent.ACTION_SEND).apply {
-//        type = "text/plain"
-//        putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.batikku))
-//        putExtra(Intent.EXTRA_TEXT, summary)
-//    }
-//
-//    context.startActivity(
-//        Intent.createChooser(
-//            intent,
-//            context.getString(R.string.batikku)
-//        )
-//    )
-//}
-//
-//@Composable
-//private fun BottomBar(
-//    navController: NavHostController,
-//    modifier: Modifier = Modifier
-//) {
-//    NavigationBar(
-//        modifier = modifier,
-//    ) {
-//        val navBackStackEntry by navController.currentBackStackEntryAsState()
-//        val currentRoute = navBackStackEntry?.destination?.route
-//        val navigationItems = listOf(
-//            NavigationItem(
-//                title = stringResource(R.string.menu_home),
-//                icon = Icons.Default.Home,
-//                screen = Screen.Home
-//            ),
-//            NavigationItem(
-//                title = stringResource(R.string.menu_cart),
-//                icon = Icons.Default.ShoppingCart,
-//                screen = Screen.Cart
-//            ),
-//            NavigationItem(
-//                title = stringResource(R.string.menu_profile),
-//                icon = Icons.Default.AccountCircle,
-//                screen = Screen.Profile
-//            ),
-//        )
-//        navigationItems.map { item ->
-//            NavigationBarItem(
-//                icon = {
-//                    Icon(
-//                        imageVector = item.icon,
-//                        contentDescription = item.title
-//                    )
-//                },
-//                label = { Text(item.title) },
-////                selected = false,
-//                selected = currentRoute == item.screen.route,
-//                onClick = {
-//                    navController.navigate(item.screen.route) {
-//                        popUpTo(navController.graph.findStartDestination().id) {
-//                            saveState = true
-//                        }
-//                        restoreState = true
-//                        launchSingleTop = true
-//                    }
-//                }
-//            )
-//        }
-//    }
-//}
