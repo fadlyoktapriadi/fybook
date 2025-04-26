@@ -98,7 +98,7 @@ fun CheckoutScreen(
         ) {
 
             OutlinedTextField(
-                value = "",
+                value = nameOrder,
                 onValueChange = {
                     nameOrder = it
                 },
@@ -114,7 +114,7 @@ fun CheckoutScreen(
             )
 
             OutlinedTextField(
-                value = "",
+                value = phoneOrder,
                 onValueChange = {
                     phoneOrder = it
                 },
@@ -130,7 +130,7 @@ fun CheckoutScreen(
             )
 
             OutlinedTextField(
-                value = "",
+                value = addressOrder,
                 onValueChange = {
                     addressOrder = it
                 },
