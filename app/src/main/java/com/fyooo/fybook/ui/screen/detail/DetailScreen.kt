@@ -1,8 +1,5 @@
 package com.fyooo.fybook.ui.screen.detail
 
-import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,12 +9,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,28 +27,24 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.compose.FybookTheme
-import com.fyooo.fybook.R
-import com.fyooo.fybook.data.local.entity.CartBookEntity
-import com.fyooo.fybook.data.model.Book
-import com.fyooo.fybook.data.source.BookDataSource
+import com.fyooo.core.data.local.entity.CartBookEntity
+import com.fyooo.core.data.model.Book
+import com.fyooo.core.data.source.BookDataSource
 import com.fyooo.fybook.ui.common.UiState
-import com.fyooo.fybook.ui.screen.Home.HomeContent
-import com.fyooo.fybook.ui.screen.components.BookItem
 import com.fyooo.fybook.ui.screen.components.ProductQuantityCounter
+import com.fyooo.fybook.ui.screen.components.formatCurrency
 import org.koin.androidx.compose.koinViewModel
-import java.text.NumberFormat
-import java.util.Locale
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +70,7 @@ fun DetailScreen(
                 navigationIcon = {
                     IconButton(onClick = navigateBack) {
                         Icon(
-                            imageVector = androidx.compose.material.icons.Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
                     }
@@ -89,10 +80,7 @@ fun DetailScreen(
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { innerPadding ->
-        // Content of the DetailScreen
-        val uiState = viewModel.uiState.collectAsState(initial = UiState.Loading).value
-
-        when (uiState) {
+        when (val uiState = viewModel.uiState.collectAsState(initial = UiState.Loading).value) {
             is UiState.Loading -> {
                 viewModel.getBookId(id)
             }
@@ -100,7 +88,6 @@ fun DetailScreen(
                 DetailContent(
                     book = uiState.data,
                     modifier = Modifier.padding(innerPadding),
-                    navigateBack = navigateBack,
                     insertToCart = { quantity ->
                         val cartBook = CartBookEntity(
                             id = null,
@@ -121,19 +108,18 @@ fun DetailScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun DetailContent(
     book: Book,
     modifier: Modifier = Modifier,
-    navigateBack: () -> Unit,
     insertToCart: (Int) -> Unit,
 ) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState()) // Enable vertical scrolling
     ) {
-        var quantity by remember { mutableStateOf(1) }
+        var quantity by remember { mutableIntStateOf(1) }
 
         AsyncImage(
             model = book.coverUrl,
@@ -289,13 +275,6 @@ fun DetailContent(
     }
 }
 
-fun formatCurrency(amount: Int): String {
-    val format = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
-    format.minimumFractionDigits = 0
-    format.maximumFractionDigits = 0
-    return format.format(amount)
-}
-
 @Composable
 @Preview(showBackground = true)
 fun DetailContentPreview() {
@@ -314,7 +293,7 @@ fun DetailContentPreview() {
             price = 0
         )
     FybookTheme {
-        DetailContent(book,navigateBack = {}, insertToCart = {})
+        DetailContent(book, insertToCart = {})
 
     }
 }

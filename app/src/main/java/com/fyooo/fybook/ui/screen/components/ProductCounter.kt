@@ -1,6 +1,5 @@
 package com.fyooo.fybook.ui.screen.components
 
-import android.text.Layout
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -27,10 +26,9 @@ fun ProductQuantityCounter(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Decrease Button
         IconButton(
-            onClick = { if (quantity > 0) onDecrease() }, // Prevent negative quantity
-            enabled = quantity > 0 // Disable button if quantity is 0
+            onClick = { if (quantity > 0) onDecrease() },
+            enabled = quantity > 0
         ) {
             Text(
                 text = "—",
@@ -40,15 +38,12 @@ fun ProductQuantityCounter(
                     .weight(1f)
             )
         }
-
-        // Quantity Display
         Text(
             text = quantity.toString(),
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        // Increase Button
         IconButton(
             onClick = { onIncrease() }
         ) {

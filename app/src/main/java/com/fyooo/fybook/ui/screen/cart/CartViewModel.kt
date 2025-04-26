@@ -2,8 +2,8 @@ package com.fyooo.fybook.ui.screen.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fyooo.fybook.data.BookRepository
-import com.fyooo.fybook.data.local.entity.CartBookEntity
+import com.fyooo.core.data.BookRepository
+import com.fyooo.core.data.local.entity.CartBookEntity
 import com.fyooo.fybook.ui.common.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

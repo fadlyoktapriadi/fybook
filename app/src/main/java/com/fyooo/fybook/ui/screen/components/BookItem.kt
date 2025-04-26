@@ -16,8 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.compose.FybookTheme
-import com.fyooo.fybook.data.model.Book
-import com.fyooo.fybook.data.source.BookDataSource
+import com.fyooo.core.data.model.Book
+import com.fyooo.core.data.source.BookDataSource
 import java.text.NumberFormat
 import java.util.Locale
 

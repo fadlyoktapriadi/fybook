@@ -9,10 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ElevatedButton
@@ -28,10 +26,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.fyooo.fybook.data.local.entity.CartBookEntity
+import com.fyooo.core.data.local.entity.CartBookEntity
 import com.fyooo.fybook.ui.common.UiState
 import com.fyooo.fybook.ui.screen.components.CartItem
 import org.koin.androidx.compose.koinViewModel
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +49,7 @@ fun CartScreen(
                         navigateBack()
                     }) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
                     }

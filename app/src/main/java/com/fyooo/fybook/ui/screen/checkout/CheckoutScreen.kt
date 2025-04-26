@@ -9,9 +9,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
@@ -25,21 +26,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.fyooo.fybook.data.api.response.ResultsItemProvince
-import com.fyooo.fybook.ui.screen.detail.formatCurrency
+import com.fyooo.core.data.api.response.ResultsItemProvince
+import com.fyooo.fybook.ui.screen.components.formatCurrency
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -62,7 +64,7 @@ fun CheckoutScreen(
     var selectedProvince by remember { mutableStateOf<ResultsItemProvince?>(null) }
     var selectedCity by remember { mutableStateOf("") }
     var selectedShippingCost by remember { mutableStateOf("") }
-    var costShipping by remember { mutableStateOf(0) }
+    var costShipping by remember { mutableIntStateOf(0) }
 
     var nameOrder by remember { mutableStateOf("") }
     var phoneOrder by remember { mutableStateOf("") }
@@ -82,7 +84,7 @@ fun CheckoutScreen(
                 navigationIcon = {
                     IconButton(onClick = { navigateBack() }) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
                     }
@@ -103,6 +105,7 @@ fun CheckoutScreen(
                     nameOrder = it
                 },
                 label = { Text("Name") },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
@@ -119,6 +122,7 @@ fun CheckoutScreen(
                     phoneOrder = it
                 },
                 label = { Text("Phone Number") },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
@@ -135,6 +139,7 @@ fun CheckoutScreen(
                     addressOrder = it
                 },
                 label = { Text("Address") },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
@@ -145,7 +150,6 @@ fun CheckoutScreen(
                     .clip(MaterialTheme.shapes.medium)
             )
 
-            // Province Dropdown
             Text(text = "Select Province", style = MaterialTheme.typography.bodyLarge)
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
@@ -180,11 +184,10 @@ fun CheckoutScreen(
                 }
             }
 
-            // City Dropdown
             Text(text = "Select City", style = MaterialTheme.typography.bodyLarge)
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = if (selectedCity.isEmpty()) "Choose a city" else selectedCity,
+                    text = selectedCity.ifEmpty { "Choose a city" },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
@@ -215,7 +218,7 @@ fun CheckoutScreen(
             Text(text = "Select Shipping", style = MaterialTheme.typography.bodyLarge)
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = if (selectedShippingCost.isEmpty()) "Choose an Shipping" else selectedShippingCost,
+                    text = selectedShippingCost.ifEmpty { "Choose an Shipping" },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)

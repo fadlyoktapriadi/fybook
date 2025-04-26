@@ -2,12 +2,10 @@ package com.fyooo.fybook.ui.screen.checkout
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fyooo.fybook.data.BookRepository
-import com.fyooo.fybook.data.api.response.ResultsItem
-import com.fyooo.fybook.data.api.response.ResultsItemCity
-import com.fyooo.fybook.data.api.response.ResultsItemProvince
-import com.fyooo.fybook.data.local.entity.CartBookEntity
-import com.fyooo.fybook.ui.common.UiState
+import com.fyooo.core.data.BookRepository
+import com.fyooo.core.data.api.response.ResultsItem
+import com.fyooo.core.data.api.response.ResultsItemCity
+import com.fyooo.core.data.api.response.ResultsItemProvince
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,8 +21,8 @@ class CheckoutViewModel(private val repository: BookRepository) : ViewModel() {
     private val _shippingCost = MutableStateFlow<List<ResultsItem >>(emptyList())
     val shippingCost: StateFlow<List<ResultsItem>> get() = _shippingCost
 
-    private val _cartBooks = MutableStateFlow<List<CartBookEntity>>(emptyList())
-    val cartBooks: StateFlow<List<CartBookEntity>> get() = _cartBooks
+    private val _cartBooks = MutableStateFlow<List<com.fyooo.core.data.local.entity.CartBookEntity>>(emptyList())
+    val cartBooks: StateFlow<List<com.fyooo.core.data.local.entity.CartBookEntity>> get() = _cartBooks
 
     fun fetchProvinces() {
         viewModelScope.launch {
