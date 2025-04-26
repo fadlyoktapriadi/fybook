@@ -1,27 +1,31 @@
 package com.fyooo.fybook.ui.screen.checkout
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,14 +34,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.fyooo.fybook.data.api.response.ResultsItemProvince
-import com.fyooo.fybook.data.local.entity.CartBookEntity
-import com.fyooo.fybook.ui.common.UiState
-import com.fyooo.fybook.ui.screen.cart.CartViewModel
-import com.fyooo.fybook.ui.screen.components.CartItem
+import com.fyooo.fybook.ui.screen.detail.formatCurrency
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -51,6 +53,7 @@ fun CheckoutScreen(
     val provinces by viewModel.provinces.collectAsState()
     val cities by viewModel.cities.collectAsState()
     val shippingCost by viewModel.shippingCost.collectAsState()
+    val cartBooks by viewModel.cartBooks.collectAsState()
 
     var expandedProvince by remember { mutableStateOf(false) }
     var expandedCity by remember { mutableStateOf(false) }
@@ -59,10 +62,17 @@ fun CheckoutScreen(
     var selectedProvince by remember { mutableStateOf<ResultsItemProvince?>(null) }
     var selectedCity by remember { mutableStateOf("") }
     var selectedShippingCost by remember { mutableStateOf("") }
+    var costShipping by remember { mutableStateOf(0) }
 
+    var nameOrder by remember { mutableStateOf("") }
+    var phoneOrder by remember { mutableStateOf("") }
+    var addressOrder by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchProvinces()
+        viewModel.getAllCartBooks()
     }
 
     Scaffold(
@@ -84,7 +94,57 @@ fun CheckoutScreen(
             modifier = modifier
                 .padding(paddingValues)
                 .padding(16.dp)
+                .verticalScroll(rememberScrollState())
         ) {
+
+            OutlinedTextField(
+                value = "",
+                onValueChange = {
+                    nameOrder = it
+                },
+                label = { Text("Name") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        MaterialTheme.colorScheme.surface,
+                        shape = MaterialTheme.shapes.medium
+                    )
+                    .padding(4.dp)
+                    .clip(MaterialTheme.shapes.medium)
+            )
+
+            OutlinedTextField(
+                value = "",
+                onValueChange = {
+                    phoneOrder = it
+                },
+                label = { Text("Phone Number") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        MaterialTheme.colorScheme.surface,
+                        shape = MaterialTheme.shapes.medium
+                    )
+                    .padding(4.dp)
+                    .clip(MaterialTheme.shapes.medium)
+            )
+
+            OutlinedTextField(
+                value = "",
+                onValueChange = {
+                    addressOrder = it
+                },
+                label = { Text("Address") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        MaterialTheme.colorScheme.surface,
+                        shape = MaterialTheme.shapes.medium
+                    )
+                    .padding(4.dp)
+                    .clip(MaterialTheme.shapes.medium)
+            )
+
             // Province Dropdown
             Text(text = "Select Province", style = MaterialTheme.typography.bodyLarge)
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -104,7 +164,12 @@ fun CheckoutScreen(
                 ) {
                     provinces?.forEach { province ->
                         DropdownMenuItem(
-                            text = { Text(province.province) },
+                            text = {
+                                Text(
+                                    province.province,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            },
                             onClick = {
                                 selectedProvince = province
                                 expandedProvince = false
@@ -147,10 +212,10 @@ fun CheckoutScreen(
                 }
             }
 
-            Text(text = "Select Expedition", style = MaterialTheme.typography.bodyLarge)
+            Text(text = "Select Shipping", style = MaterialTheme.typography.bodyLarge)
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = if (selectedShippingCost.isEmpty()) "Choose an expedition" else selectedShippingCost,
+                    text = if (selectedShippingCost.isEmpty()) "Choose an Shipping" else selectedShippingCost,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
@@ -168,14 +233,110 @@ fun CheckoutScreen(
                             DropdownMenuItem(
                                 text = { Text("${cost.service} - ${cost.cost[0].value}") },
                                 onClick = {
-                                    selectedShippingCost = "${cost.service} - ${cost.cost[0].value}"
+                                    selectedShippingCost =
+                                        "${cost.service} - ${formatCurrency(cost.cost[0].value)}"
                                     expandedShippingCost = false
+                                    costShipping = cost.cost[0].value
                                 }
                             )
                         }
                     }
                 }
             }
+
+            Card(
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp)
+                ) {
+                    Text(
+                        text = "Order Summary",
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                    cartBooks.forEach { book ->
+                        Text(
+                            text = "${book.title} - ${book.price?.let { formatCurrency(it) }}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                        )
+                        Text(
+                            text = "Quantity: ${book.quantity}",
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp, vertical = 2.dp)
+                        )
+                    }
+                    HorizontalDivider(
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                    Text(
+                        text = "Shipping Cost: ${formatCurrency(costShipping)}",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 2.dp)
+                    )
+                    Text(
+                        text = "Total: ${formatCurrency(cartBooks.sumOf { it.price!! * it.quantity!! } + costShipping)}",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    )
+                }
+
+            }
+            ElevatedButton(
+                colors = ButtonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    disabledContainerColor = MaterialTheme.colorScheme.primary,
+                    disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
+                onClick = {
+                    if (nameOrder.isNotEmpty() && phoneOrder.isNotEmpty() && addressOrder.isNotEmpty() && selectedProvince != null && selectedCity.isNotEmpty() && selectedShippingCost.isNotEmpty()) {
+                        val uri = String.format(
+                            "https://api.whatsapp.com/send?phone=%s&text=%s",
+                            6289514347848,
+                            Uri.encode(
+                                """
+    *Order Book*
+
+    Name: $nameOrder
+    Phone: $phoneOrder
+    Address: $addressOrder
+    Province: ${selectedProvince?.province}
+    City: $selectedCity
+    Shipping Cost: ${formatCurrency(costShipping)}
+    Total: ${formatCurrency(cartBooks.sumOf { it.price!! * it.quantity!! } + costShipping)}
+    Books:
+    ${
+                                    cartBooks.joinToString("\n") {
+                                        "${it.title} - ${it.price?.let { price -> formatCurrency(price) }}"
+                                    }
+                                }
+    """.trimIndent()
+                            )
+                        )
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                        context.startActivity(intent)
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                Text(text = "Submit Order")
+            }
         }
     }
 }
+

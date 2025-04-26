@@ -4,12 +4,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,9 +23,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.fyooo.fybook.data.model.Book
-import com.fyooo.fybook.ui.screen.components.BookItem
 import com.fyooo.fybook.ui.common.UiState
-import com.fyooo.fybook.ui.screen.detail.DetailContent
+import com.fyooo.fybook.ui.screen.components.BookItem
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,11 +39,14 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Fybook",
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.primary
+                title = {
+                    Text(
+                        text = "Fybook",
+                        style = MaterialTheme.typography.displaySmall,
+                        color = MaterialTheme.colorScheme.primary
 
-                ) },
+                    )
+                },
                 actions = {
                     IconButton(onClick = {
                         navigateToCart()
@@ -62,6 +64,7 @@ fun HomeScreen(
             is UiState.Loading -> {
                 viewModel.fetchBooks()
             }
+
             is UiState.Success -> {
                 HomeContent(
                     listBook = uiState.data,
@@ -69,6 +72,7 @@ fun HomeScreen(
                     navigateToDetail = navigateToDetail
                 )
             }
+
             is UiState.Error -> {
                 Text(text = "Error: ${uiState.errorMessage}", modifier = Modifier.padding(16.dp))
             }
@@ -83,7 +87,6 @@ fun HomeContent(
     modifier: Modifier = Modifier,
     navigateToDetail: (Long) -> Unit,
 ) {
-    Column {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(160.dp),
             contentPadding = PaddingValues(16.dp),
@@ -97,6 +100,4 @@ fun HomeContent(
                 })
             }
         }
-
-    }
-    }
+}
